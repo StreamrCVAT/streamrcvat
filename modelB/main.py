@@ -126,16 +126,16 @@ def pipeline():
     frame_height = 720
 
     #create the model
-    right_model = construct_modelB(frame_height//2, frame_width//2, 3)
-    bottom_model = construct_modelB(frame_height//2, frame_width//2, 3)
-    left_model = construct_modelB(frame_height//2, frame_width//2, 3)
-    top_model = construct_modelB(frame_height//2, frame_width//2, 3)
+    right_model = construct_modelB(frame_height//4, frame_width//4, 3)
+    left_model = construct_modelB(frame_height//4, frame_width//4, 3)
+    bottom_model = construct_modelB(frame_height//4, frame_width//4, 3)
+    top_model = construct_modelB(frame_height//4, frame_width//4, 3)
 
     #compiling all models 
-    right_model.compile(optimizer='sgd', loss='mse', metrics='mse')
-    bottom_model.compile(optimizer='sgd', loss='mse', metrics='mse')
-    left_model.compile(optimizer='sgd', loss='mse', metrics='mse')
-    top_model.compile(optimizer='sgd', loss='mse', metrics='mse')
+    right_model.compile(optimizer='sgd', loss='mean_squared_error', metrics=['mae'])
+    bottom_model.compile(optimizer='sgd', loss='mean_squared_error', metrics=['mae'])
+    left_model.compile(optimizer='sgd', loss='mean_squared_error', metrics=['mae'])
+    top_model.compile(optimizer='sgd', loss='mean_squared_error', metrics=['mae'])
 
     for filename in os.listdir(yolo_output_dir):
         if(filename=='readme.txt'):
@@ -165,25 +165,25 @@ def pipeline():
             strips = strip(image, line1[1], line1[0], line1[3], line1[2]) #args: img, xmin, ymin, xmax, ymax
 
             if(line1[0] != line2[0]): #ymin do not match (top line eqn)
-                top_part = cv2.resize(strips[3], (frame_height//2, frame_width//2))
+                top_part = cv2.resize(strips[3], (frame_height//4, frame_width//4))
                 top_pre = top_model.predict([top_part, min_max_scalar(line1[0], 0, top_part.shape[0])]) #scale with height of crop part
                 if(top_pre != line2[0]): #modelB wrongly predicts
                     top_model.fit([top_part, min_max_scalar(line1[0], 0, top_part.shape[0])], line2[0])
 
             if(line1[1] != line2[1]): #xmin do not match (left line eqn)
-                left_part = cv2.resize(strips[2], (frame_height//2, frame_width//2))
+                left_part = cv2.resize(strips[2], (frame_height//4, frame_width//4))
                 left_pre = left_model.predict([left_part, min_max_scalar(line1[1], 0, left_part.shape[1])]) #scale with width of crop part
                 if(left_pre != line2[1]): #modelB wrongly predicts
                     left_model.fit([left_part, min_max_scalar(line1[1], 0, left_part.shape[1])], line2[1])
 
             if(line1[2] != line2[2]): #ymax do not match (bot line eqn)
-                bot_part = cv2.resize(strips[1], (frame_height//2, frame_width//2))
+                bot_part = cv2.resize(strips[1], (frame_height//4, frame_width//4))
                 bot_pre = bot_model.predict([bot_part, min_max_scalar(line1[2], 0, bot_part.shape[0])])
                 if(bot_pre != line2[2]): #modelB wrongly predicts
                     bot_model.fit([bot_part, min_max_scalar(line1[2], 0, bot_part.shape[0])], line2[2])
                     
             if(line1[3] != line2[3]): #xmax do not match (right line eqn)
-                right_part = cv2.resize(strips[0], (frame_height//2, frame_width//2))
+                right_part = cv2.resize(strips[0], (frame_height//4, frame_width//4))
                 right_pre = right_model.predict([right_part, min_max_scalar(line1[3], 0, right_part.shape[1])])
                 if(right_pre != line2[3]): #modelB wrongly predicts
                     right_model.fit([right_part, min_max_scalar(line1[3], 0, right_part.shape[1])], line2[3])
@@ -197,4 +197,6 @@ if __name__ == "__main__":
     # image = cv2.imread('D:\\smart_space_lab\\Intel_Annotation\\code\\images\\video_trim 041.jpg')
     # visualize_strips(image)
     pipeline()
+    # model = construct_modelB(180, 320, 3)
+    # model.summary()
     
