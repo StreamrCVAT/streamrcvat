@@ -5,11 +5,12 @@ import pandas as pd
 import numpy as np 
 import cv2
 import os
-from keras.utils import plot_model
+#import tensorflow as tf
+#from keras.utils import plot_model
 from keras.layers import Conv2D
 from keras.layers import Input
 from keras.layers import Activation
-from keras.utils import plot_model
+#from keras.utils import plot_model
 from keras.models import Model
 from keras.layers import Dense
 from keras.layers import Flatten
@@ -25,8 +26,8 @@ import math
 def construct_modelB_cnn(height, width, depth): #height, width, depth are the input dimensions of the model
 
     # 1 Convolutional layer
-    input = Input(shape=(height, width, depth))
-    conv1 = Conv2D(64, kernel_size=3, padding='same')(input)
+    inp = Input(shape=(height, width, depth))
+    conv1 = Conv2D(64, kernel_size=3, padding='same')(inp)
     act1 = Activation('relu')(conv1)
     pool1 = MaxPooling2D(pool_size=(2,2))(act1)
 
@@ -43,18 +44,18 @@ def construct_modelB_cnn(height, width, depth): #height, width, depth are the in
 
     # model = Model(inputs=input, outputs=act4)
     # return model
-    return input, output
+    return inp, output
 
 def construct_modelB_line():
     #single neuron
-    input = Input(shape=(1,))
-    hidden1 = Dense(1)(input)
+    inp = Input(shape=(1,))
+    hidden1 = Dense(1)(inp)
     act1 = Activation('linear')(hidden1)
 
     # model = Model(inputs=input, outputs=act1)
     # return model
     output = act1
-    return input, output
+    return inp, output
 
 def construct_modelB(height, width, depth):
     cnn_model_input, cnn_model_output = construct_modelB_cnn(height, width, depth)
@@ -77,15 +78,15 @@ def strip(image, xmin, ymin, xmax, ymax):
     w_r = width//2 # selecting 1/2th segment from either side of the predicted line
     h_r = height//2 # selecting 1/2th segment from either side of the predicted line
     print(w_r, h_r)
-    ymin_t = max(0, ymin-h_r)
-    ymin_b = max(0, ymin+h_r)
-    ymax_t = max(0, ymax-h_r) 
-    ymax_b = max(0, ymax+h_r)
-    xmin_l = max(0, xmin-w_r) 
-    xmin_r = max(0, xmin+w_r)
-    xmax_l = max(0, xmax-w_r) 
-    xmax_r = max(0, xmax+w_r) 
-
+    ymin_t = int(max(0, ymin-h_r))
+    ymin_b = int(max(0, ymin+h_r))
+    ymax_t = int(max(0, ymax-h_r)) 
+    ymax_b = int(max(0, ymax+h_r))
+    xmin_l = int(max(0, xmin-w_r)) 
+    xmin_r = int(max(0, xmin+w_r))
+    xmax_l = int(max(0, xmax-w_r)) 
+    xmax_r = int(max(0, xmax+w_r))
+    #print(image.shape)
     right_strip = image[ymin_t:ymax_b, xmax_l:xmax_r, :]
     bottom_strip = image[ymax_t:ymax_b, xmin_l:xmax_r, :]
     left_strip = image[ymin_t:ymax_b, xmin_l:xmin_r, :]
@@ -117,10 +118,10 @@ def min_max_scalar(x, xmin, xmax):
 
 def pipeline():
     #paths to coordinate dirs
-    yolo_output_dir = 'D:\\smart_space_lab\\Intel_Annotation\\code\\modelA\\yolo_output'
-    human_annotated_dir = 'D:\\smart_space_lab\\Intel_Annotation\\frames\\annotated frames coor (1 to 499)'
+    yolo_output_dir = 'E:\\General\\Personal\\Pro\\Intel Annotation pro\\Repo\\Annotation\\modelB\\yolo_output'
+    human_annotated_dir = 'E:\\General\\Personal\\Pro\\Intel Annotation pro\\Repo\\Annotation\\modelB\\annotated frames coor (1 to 499)'
     #path to frames dir
-    frames_dir = 'D:\\smart_space_lab\\Intel_Annotation\\frames\\video_trim (frames)'
+    frames_dir = 'E:\\General\\Personal\\Pro\\Intel Annotation pro\\Repo\\Annotation\\video_trim (frames)'
     #real frame size
     frame_width = 1280
     frame_height = 720
@@ -166,7 +167,9 @@ def pipeline():
 
             if(line1[0] != line2[0]): #ymin do not match (top line eqn)
                 top_part = cv2.resize(strips[3], (frame_height//4, frame_width//4))
-                top_pre = top_model.predict([top_part, min_max_scalar(line1[0], 0, top_part.shape[0])]) #scale with height of crop part
+                print(top_part)
+                #top_pre = top_model.predict([top_part, min_max_scalar(line1[0], 0, int(top_part.shape[0]))]) #scale with height of crop part
+                top_pre = top_model.predict([np.array(top_part)])
                 if(top_pre != line2[0]): #modelB wrongly predicts
                     top_model.fit([top_part, min_max_scalar(line1[0], 0, top_part.shape[0])], line2[0])
 
