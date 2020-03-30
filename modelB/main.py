@@ -26,7 +26,7 @@ import math
 def construct_modelB_cnn(height, width, depth): #height, width, depth are the input dimensions of the model
 
     # 1 Convolutional layer
-    inp = Input(shape=(height, width, depth))
+    inp = Input(shape=(width,height,depth))
     conv1 = Conv2D(64, kernel_size=3, padding='same')(inp)
     act1 = Activation('relu')(conv1)
     pool1 = MaxPooling2D(pool_size=(2,2))(act1)
@@ -131,6 +131,7 @@ def pipeline():
     left_model = construct_modelB(frame_height//4, frame_width//4, 3)
     bottom_model = construct_modelB(frame_height//4, frame_width//4, 3)
     top_model = construct_modelB(frame_height//4, frame_width//4, 3)
+    print(top_model.summary())
 
     #compiling all models 
     right_model.compile(optimizer='sgd', loss='mean_squared_error', metrics=['mae'])
@@ -167,29 +168,29 @@ def pipeline():
 
             if(line1[0] != line2[0]): #ymin do not match (top line eqn)
                 top_part = cv2.resize(strips[3], (frame_height//4, frame_width//4))
-                print(top_part)
-                #top_pre = top_model.predict([top_part, min_max_scalar(line1[0], 0, int(top_part.shape[0]))]) #scale with height of crop part
-                top_pre = top_model.predict([np.array(top_part)])
+                #print(top_part.shape)
+                top_pre = top_model.predict([[top_part], [min_max_scalar(line1[0], 0, int(top_part.shape[0]))]]) #scale with height of crop part
+                #top_pre = top_model.predict([np.array(top_part)])
                 if(top_pre != line2[0]): #modelB wrongly predicts
-                    top_model.fit([top_part, min_max_scalar(line1[0], 0, top_part.shape[0])], line2[0])
+                    top_model.fit([[top_part], [min_max_scalar(line1[0], 0, top_part.shape[0])]], [line2[0]])
 
             if(line1[1] != line2[1]): #xmin do not match (left line eqn)
                 left_part = cv2.resize(strips[2], (frame_height//4, frame_width//4))
-                left_pre = left_model.predict([left_part, min_max_scalar(line1[1], 0, left_part.shape[1])]) #scale with width of crop part
+                left_pre = left_model.predict([[left_part], [min_max_scalar(line1[1], 0, left_part.shape[1])]]) #scale with width of crop part
                 if(left_pre != line2[1]): #modelB wrongly predicts
-                    left_model.fit([left_part, min_max_scalar(line1[1], 0, left_part.shape[1])], line2[1])
+                    left_model.fit([[left_part], [min_max_scalar(line1[1], 0, left_part.shape[1])]], [line2[1]])
 
             if(line1[2] != line2[2]): #ymax do not match (bot line eqn)
                 bot_part = cv2.resize(strips[1], (frame_height//4, frame_width//4))
-                bot_pre = bot_model.predict([bot_part, min_max_scalar(line1[2], 0, bot_part.shape[0])])
+                bot_pre = bottom_model.predict([[bot_part], [min_max_scalar(line1[2], 0, bot_part.shape[0])]])
                 if(bot_pre != line2[2]): #modelB wrongly predicts
-                    bot_model.fit([bot_part, min_max_scalar(line1[2], 0, bot_part.shape[0])], line2[2])
+                    bottom_model.fit([[bot_part], [min_max_scalar(line1[2], 0, bot_part.shape[0])]], [line2[2]])
                     
             if(line1[3] != line2[3]): #xmax do not match (right line eqn)
                 right_part = cv2.resize(strips[0], (frame_height//4, frame_width//4))
-                right_pre = right_model.predict([right_part, min_max_scalar(line1[3], 0, right_part.shape[1])])
+                right_pre = right_model.predict([[right_part], [min_max_scalar(line1[3], 0, right_part.shape[1])]])
                 if(right_pre != line2[3]): #modelB wrongly predicts
-                    right_model.fit([right_part, min_max_scalar(line1[3], 0, right_part.shape[1])], line2[3])
+                    right_model.fit([[right_part], [min_max_scalar(line1[3], 0, right_part.shape[1])]], [line2[3]])
 
         print(filename, line1, line2)
 
