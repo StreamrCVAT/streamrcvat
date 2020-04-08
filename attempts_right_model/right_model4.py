@@ -47,12 +47,12 @@ def construct_modelB_cnn(height, width, depth, regres=False): #height, width, de
     
 
     # 2 Convolutional layer
-    # conv2 = Conv2D(128, kernel_size=3, padding='same')(pool1)
-    # act2 = Activation('relu')(conv2)
-    # pool2 = MaxPooling2D(pool_size=(3,3))(act2)
+    conv2 = Conv2D(128, kernel_size=3, padding='same')(pool1)
+    act2 = Activation('relu')(conv2)
+    pool2 = MaxPooling2D(pool_size=(3,3))(act2)
 
     # Flatten layer
-    flat2 = Flatten()(pool1)
+    flat2 = Flatten()(pool2)
 
     #Dense Layers
     hidden3 = Dense(16)(flat2)
