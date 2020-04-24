@@ -36,10 +36,10 @@ Frame				: 12.84 seconds/frame
 
 ## Contributors
 
-[Sanjay Tharagesh R S](https://github.com/sanjaytharagesh31)  
-[Srishilesh P S](https://github.com/srishilesh)
+* [Sanjay Tharagesh R S](https://github.com/sanjaytharagesh31)  
+* [Srishilesh P S](https://github.com/srishilesh)
 
 ## Mentors
 
-Dr.Chetan Nadiger, Lead Engineer - Machine Learning, Intel [chetanhn@gmail.com]
-Dr.T.Senthilkumar, Associate Professor, Computer Science and Engineeirng Department, Amrita Vishwa Vidyapeetham, Coimbatore [t_senthilkumar@cb.amrita.edu]
+* Dr.Chetan Nadiger, Lead Engineer - Machine Learning, Intel [chetanhn@gmail.com]
+* Dr.T.Senthilkumar, Associate Professor, Computer Science and Engineeirng Department, Amrita Vishwa Vidyapeetham, Coimbatore [t_senthilkumar@cb.amrita.edu]
