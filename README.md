@@ -1,4 +1,4 @@
-# Video Annotation tool
+# Semi-Automated Video Annotation tool usig Deep Learning
 
 ## Overview
 
@@ -41,5 +41,5 @@ Frame				: 12.84 seconds/frame
 
 ## Mentors
 
-Dr.Chetan Nategar  
-Dr.T.Senthilkumar
+Dr.Chetan Nadiger, Lead Engineer - Machine Learning, Intel [chetanhn@gmail.com]
+Dr.T.Senthilkumar, Associate Professor, Computer Science and Engineeirng Department, Amrita Vishwa Vidyapeetham, Coimbatore [t_senthilkumar@cb.amrita.edu]
