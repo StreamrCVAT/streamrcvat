@@ -1,0 +1,5 @@
+Train after collecting 8 frames
+'*' means FREEZED
+[CNN][DENSE]  - 171
+[CNN*][DENSE] - 176
+[CNN* (unfreez at every 5th batch)][DENSE] - 180
