@@ -1,0 +1,27 @@
+RIGHT MODEL
+Train after collecting 8 frames
+'*' means FREEZED
+[CNN][DENSE]  - 171
+[CNN*][DENSE] - 176
+[CNN* (unfreez at every 5th batch)][DENSE] - 180
+
+BOTTOM MODEL
+Train after collecting 8 frames
+'*' means FREEZED
+[CNN][DENSE]  - 250
+[CNN*][DENSE] - 258
+[CNN* (unfreez at every 5th batch)][DENSE] - 251
+
+LEFT MODEL
+Train after collecting 8 frames
+'*' means FREEZED
+[CNN][DENSE]  - 147
+[CNN*][DENSE] - 147
+[CNN* (unfreez at every 5th batch)][DENSE] - 147
+
+TOP MODEL
+Train after collecting 8 frames
+'*' means FREEZED
+[CNN][DENSE]  - 252
+[CNN*][DENSE] - 249
+[CNN* (unfreez at every 5th batch)][DENSE] - 242
