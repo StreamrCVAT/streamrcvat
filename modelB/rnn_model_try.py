@@ -5,7 +5,7 @@ import numpy as np
 import math
 from keras.models import Sequential
 from keras.layers import Dense
-from keras.layers import LSTM
+from keras.layers import LSTM,SimpleRNN
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 from numpy import array
@@ -23,15 +23,19 @@ sequences = array(sequences)
 X,y = sequences[:,0],sequences[:,1]
 
 X = np.reshape(X, (X.shape[0], 1, X.shape[1]))
+X = np.array(X)
+y = np.array(y)
 print(X)
 print(y.shape)
 model = Sequential()
-model.add(LSTM(50, input_shape=(1,4)))
-model.add(Dense(4))
+model.add(SimpleRNN(32,input_shape=(1,4)))
+# model.add(LSTM(64))
+model.add(Dense(32,activation='linear'))
+model.add(Dense(16,activation='linear'))
+model.add(Dense(4,activation='linear'))
 print(model.summary())
 
-
 model.compile(loss='mean_squared_error', optimizer='adam')
-model.fit(X, y, epochs=10, batch_size=1, verbose=2)
+model.fit(X, y, epochs=20, batch_size=1, verbose=2)
 
-print(model.predict([[[137,161,487,1256]]]))
+print(model.predict(array([[[137,161,487,1256]]])))
