@@ -1,4 +1,7 @@
 import os
+import csv
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 coors = list()
 predicted = list()
@@ -64,23 +67,50 @@ def polatate():
 
 
 
+def visualize():
+    right_errors = list()
+    for i in range(len(coors)):
+        right_errors.append(abs(coors[i][3]-predicted[i][3]))
+
+    total_error = sum(right_errors)
+    print("total errors: ", total_error)
 
 collect_coors()
 polatate()
 
+with open("top_performance.csv", "w", newline="") as f:
+    writer = csv.writer(f)
+    top_error = list()
+    top_error.append(['top_error'])
+    for i in range(len(coors)):
+        top_error.append([abs(coors[i][0]-predicted[i][0])])
+    writer.writerows(top_error)
+
+with open("right_performance.csv", "w", newline="") as f:
+    writer = csv.writer(f)
+    right_error = list()
+    right_error.append(['right_error'])
+    for i in range(len(coors)):
+        right_error.append([abs(coors[i][3]-predicted[i][3])])
+    writer.writerows(right_error)
+
+with open("bottom_performance.csv", "w", newline="") as f:
+    writer = csv.writer(f)
+    bottom_error = list()
+    bottom_error.append(['bottom_error'])
+    for i in range(len(coors)):
+        bottom_error.append([abs(coors[i][2]-predicted[i][2])])
+    writer.writerows(bottom_error)
+
+with open("left_performance.csv", "w", newline="") as f:
+    writer = csv.writer(f)
+    left_error = list()
+    left_error.append(['left_error'])
+    for i in range(len(coors)):
+        left_error.append([abs(coors[i][1]-predicted[i][1])])
+    writer.writerows(left_error)
 
 print(len(predicted))
 print(len(coors))
 
-# (x1, y2)
-
-#                 (x2, y2)
-
-
-#     y2-y1   y-y1
-#     x2-x1 = x-x1
-
-# y = ((y2-y1) / (x2-x1) ) * (x-x1) + y1
-
-
-
+visualize()
