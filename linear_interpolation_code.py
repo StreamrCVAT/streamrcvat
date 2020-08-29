@@ -45,17 +45,21 @@ def polatate():
         r = (coors[cnt][3], coors[cnt][2]) # (xmax, ymax)
         s = (coors[cnt][1], coors[cnt][2]) # (xmin, ymax)
 
-        a_diff = p[0]-a[0] / (skip-1) # Horizontal Distance between Min(frame1, frame2)
-        b_diff = q[0]-b[0] / (skip-1) # Horizontal Distance between Max(frame1, frame2)
+        a_diff = abs(p[0]-a[0]) / (skip-1) # Horizontal Distance between Min(frame1, frame2)
+        b_diff = abs(q[0]-b[0]) / (skip-1) # Horizontal Distance between Max(frame1, frame2)
         #[ymin xmin ymax xmax]
         for i in range(1, skip):
-            predicted.append([
+            tmp = [
                 y_val(a, p, a[0] + a_diff*i), a[0] + a_diff*i, y_val(d, s, a[0] + a_diff*i), b[0] + b_diff*i
-            ])
+            ]
+            tmp = list(map(int, tmp))
+            predicted.append(tmp)
         predicted.append(coors[cnt])
         a, b, c, d = p, q, r, s
         cnt = cnt + skip
 
+    for i in range(len(coors)-len(predicted)):
+        predicted.append(predicted[-1])
     print(predicted)
 
 
