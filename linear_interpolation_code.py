@@ -21,8 +21,8 @@ def collect_coors():
         print(line)
         coors.append(line)
 
-def y_val(a, b, x):
-    return (((b[1]-a[1])/(b[0]-a[0])) * (x-a[0]) + (a[1]))
+def y_val(point1, point2, x):
+    return (((point2[1]-point1[1])/(point2[0]-point1[0])) * (x-point1[0]) + (point1[1]))
 
 
 def polatate():
@@ -31,21 +31,21 @@ def polatate():
     # d     c
     cnt = 0
     l = len(coors)
-    a = (coors[cnt][1], coors[cnt][0])
-    b = (coors[cnt][1], coors[cnt][2])
-    c = (coors[cnt][3], coors[cnt][2])
-    d = (coors[cnt][1], coors[cnt][2])
+    a = (coors[cnt][1], coors[cnt][0]) # (xmin, ymin)
+    b = (coors[cnt][1], coors[cnt][2]) # (xmin, ymax)
+    c = (coors[cnt][3], coors[cnt][2]) # (xmax, ymax)
+    d = (coors[cnt][3], coors[cnt][0]) # (xmax, ymin)
     predicted.append(coors[cnt])
     cnt = cnt + skip
 
     while(cnt < l):
-        p = (coors[cnt][1], coors[cnt][0])
-        q = (coors[cnt][1], coors[cnt][2])
-        r = (coors[cnt][3], coors[cnt][2])
-        s = (coors[cnt][1], coors[cnt][2])
+        p = (coors[cnt][1], coors[cnt][0]) # (xmin, ymin)
+        q = (coors[cnt][1], coors[cnt][2]) # (xmin, ymax)
+        r = (coors[cnt][3], coors[cnt][2]) # (xmax, ymax)
+        s = (coors[cnt][3], coors[cnt][0]) # (xmax, ymin)
 
-        a_diff = p[0]-a[0] / (skip-1)
-        b_diff = q[0]-b[0] / (skip-1)
+        a_diff = p[0]-a[0] / (skip-1) # Horizontal Distance between Min(frame1, frame2)
+        b_diff = q[0]-b[0] / (skip-1) # Horizontal Distance between Max(frame1, frame2)
         #[ymin xmin ymax xmax]
         for i in range(1, skip):
             predicted.append([
