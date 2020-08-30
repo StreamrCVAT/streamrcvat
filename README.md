@@ -1,4 +1,4 @@
-# Semi-Automated Video Annotation tool usig Deep Learning
+# Semi-Automated Video Annotation tool using Deep Learning
 
 ## Overview
 
