@@ -1,4 +1,4 @@
-# Semi-Automated Video Annotation tool usig Deep Learning
+# Semi-Automated Video Annotation tool using Deep Learning
 
 ## Overview
 
@@ -33,6 +33,10 @@ Annotation Tool URL		: https://github.com/tzutalin/labelImg
 Annotated Image format	: YOLO (Coordinates in .txt file)  
 Average time to annotate 1  
 Frame				: 12.84 seconds/frame
+
+## Highway Dataset working on
+
+https://www.jpjodoin.com/urbantracker/dataset.html
 
 ## Contributors
 
