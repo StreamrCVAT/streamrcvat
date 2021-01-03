@@ -12,13 +12,13 @@ The main objective is to build a solution to annotate objects in a video automat
 
 3) A vital requirement for computer vision-based machine learning solutions is to have high-quality data. In the annotation task, there are possibilities for errors due to human bias. For example
 
->> a)The boundary of the image is not properly marked
+- The boundary of the image is not properly marked
 
->> b)Some objects are missed during the annotation process
+- Some objects are missed during the annotation process
 
->> c)Typically in medical images, the region has to be properly and accurately annotated
+- Typically in medical images, the region has to be properly and accurately annotated
 
->> d)In some scenarios, domain expertise is also required as discussed for the medical image annotation task
+- In some scenarios, domain expertise is also required as discussed for the medical image annotation task
 
 4) If annotation to be a manual process, then a lot of human power has to be deployed that requires a huge amount of money to be paid to the workers.
 
