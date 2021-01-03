@@ -33,20 +33,20 @@ from global_params import *
 from batch_training import *
 from performance_visualize import *
 
-def right_pipeline():
+def right_pipeline(YOLO_OUTPUT_DIR, HUMAN_ANNOTATED_DIR, FRAMES_DIR):
     performance = [['human_line', 'YOLO line', 'ModelB line', 'YOLO error', 'ModelB error']]
     #paths to coordinate dirs
-    yolo_output_dir = 'D:\\smart_space_lab\\Intel_Annotation\\code\\modelA\\yolo_output'
-    human_annotated_dir = 'D:\\smart_space_lab\\Intel_Annotation\\frames\\annotated frames coor (1 to 499)'
+    yolo_output_dir = YOLO_OUTPUT_DIR
+    human_annotated_dir = HUMAN_ANNOTATED_DIR
     #path to frames dir
-    frames_dir = 'D:\\smart_space_lab\\Intel_Annotation\\frames\\video_trim (frames)'
+    frames_dir = FRAMES_DIR
     print('---------------------PATH to DIRS SET---------------------------')
 
     #real frame size
     frame_width = FRAME_WW
     frame_height = FRAME_HH
 
-    right_model = batch_train("right")
+    right_model = batch_train("right", YOLO_OUTPUT_DIR, HUMAN_ANNOTATED_DIR, FRAMES_DIR)
 
     # checkpoint
     es = EarlyStopping(monitor='mae', mode='min', patience=10, restore_best_weights=True, verbose=1)

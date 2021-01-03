@@ -1,0 +1,54 @@
+ASSUMPTIONS:
+1) YOLO coordinates for all the frames present
+2) Linear Interpolation coordinates for all the frames present
+3) Human annotation required for the first 32 frames
+
+Algorithm:
+0) Select the paths
+1) Annotate the first 32 frames (Prediction will not be done & No model training) [Display in UI that no prediction will be done]
+2) After annotating first 32 frames -> Model training (Creation of Base models for all the sides)
+3) Save the 4 different models
+4) Move to the next frame
+5) Find the 4 different strips -> Pass them into each of the base models -> Predict the possible coordinates (Final output = YOLO + ModelB's Predicted error)
+6) Display the final output on the UI - Display all the 3 boxes (Final output, YOLO, Linear Interpolation)
+7) If no changes for every side
+	Then save the final output and move to the next frame
+8) If changes found in any one or more side
+	* Find the side along with the (Change = New human annotation - YOLO output)
+	* Model B training based on Original side Strip + Change
+9) Go to step number 4
+
+
+
+Algo:
+
+l_model = base_model(32);
+r_model
+t_mdoel
+b_model
+
+
+left_model()
+    error_yolo = L_MODEL.PREDICT(l_strip);
+    return yolo_output_erro_yolo;
+
+retrain(side)
+    if(side == left) 
+        l_model.fit(strip, yolo_line-human_line);
+
+
+
+for frame in frames
+    left_line = left_model();
+    right_line = right_model();
+    bot_line
+    top_line
+    
+    draw a modelB box on the UI
+    
+    //after clickign next
+    
+    check if error is there
+    if (error)
+        side = chk_side();
+        retrain(side);

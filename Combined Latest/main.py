@@ -36,11 +36,10 @@ from bottom_model import *
 from left_model import *
 from top_model import *
 
-
 if __name__ == "__main__":
-    right_pipeline()
-    bottom_pipeline()
-    left_pipeline()
-    top_pipeline()
+    right_pipeline(YOLO_OUTPUT_DIR, HUMAN_ANNOTATED_DIR, FRAMES_DIR)
+    bottom_pipeline(YOLO_OUTPUT_DIR, HUMAN_ANNOTATED_DIR, FRAMES_DIR)
+    left_pipeline(YOLO_OUTPUT_DIR, HUMAN_ANNOTATED_DIR, FRAMES_DIR)
+    top_pipeline(YOLO_OUTPUT_DIR, HUMAN_ANNOTATED_DIR, FRAMES_DIR)
 
     

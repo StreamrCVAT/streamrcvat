@@ -32,7 +32,7 @@ seed(1)
 def min_max_scalar(x, xmin, xmax):
     return (x-xmin)/(xmax-xmin)
 
-def batch_train(side_name):
+def batch_train(side_name, YOLO_OUTPUT_DIR, HUMAN_ANNOTATED_DIR, FRAMES_DIR):
     BASE_SIZE = 32 #number of images to train for base model
 
     #real frame size
@@ -40,10 +40,10 @@ def batch_train(side_name):
     frame_height = FRAME_HH
 
     #paths to coordinate dirs
-    yolo_output_dir = 'D:\\smart_space_lab\\Intel_Annotation\\code\\modelA\\yolo_output'
-    human_annotated_dir = 'D:\\smart_space_lab\\Intel_Annotation\\frames\\annotated frames coor (1 to 499)'
+    yolo_output_dir = YOLO_OUTPUT_DIR
+    human_annotated_dir = HUMAN_ANNOTATED_DIR
     #path to frames dir
-    frames_dir = 'D:\\smart_space_lab\\Intel_Annotation\\frames\\video_trim (frames)'
+    frames_dir = FRAMES_DIR
     print('---------------------PATH to DIRS SET---------------------------')
 
     #create the model
@@ -58,7 +58,7 @@ def batch_train(side_name):
 
     X_train_image = []
     X_train_yolo = []
-    y_train = []
+    y_train = [] # Error from YOLO
     inc = 0
     
     for filename in os.listdir(yolo_output_dir):
