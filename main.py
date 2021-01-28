@@ -17,20 +17,22 @@ def alertFrame32():
             break
     return True   
 
-# Get 
-def getFirstFrameCentroid():
-    firstFramePath = ABSOLUTE_PATH + "\\data\\" + FINAL_UI_OUTPUT_PATH + "\\frame-001.txt"
+# Get the centroid for the Human annotated frame
+def getFrameCentroid(fileName):
+    framePath = ABSOLUTE_PATH + "\\data\\" + FINAL_UI_OUTPUT_PATH + "\\" + fileName
     try:
-        with open(firstFramePath, 'r') as firstFrame: # VERIFY THE FILE NAME
-            firstFrameCoors = firstFrame.read()
-            firstFrameCentroid = helper.centroid(list(firstFrameCoors.split()))
-            return firstFrameCentroid
+        with open(framePath, 'r') as frame: # VERIFY THE FILE NAME
+            frameCoors = frame.read()
+            frameCentroid = helper.centroid(list(frameCoors.split()))
+            return frameCentroid
     except:
         print("File not found")
         return
 
 def main():
-    getFirstFrameCentroid()
+    firstCentroid = getFrameCentroid("frame-001.txt")
+    yoloTracker.trackObject(firstCentroid) # Enable live YOLO tracker for the object
+    print("YOLO Tracker completed!")
 
 if __name__ == '__main__':
     main()

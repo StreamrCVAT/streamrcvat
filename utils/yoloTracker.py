@@ -24,7 +24,7 @@ def objectInNextFrame(listOfCoordinates, centroid_point): #([[1,2,3,4], ..] , [1
 # Track the object
 def trackObject(previousObjectCentroid):
     # Path to the YOLO output folder
-    yoloOutputPath = YOLO_OUTPUT_PATH
+    yoloOutputPath = helper.absolutePathConverter + "\\data\\" + YOLO_OUTPUT_PATH
     yoloOutputPathFiles = getFilesPathAsList(yoloOutputPath)
 
     # Iterate through each filename in the YOLO output folder
