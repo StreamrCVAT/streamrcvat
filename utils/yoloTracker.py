@@ -29,9 +29,6 @@ def nearest_point(lst_points, centroid_point): #([[1,2,3,4], ..] , [1, 2])
             min_dist = dist
     return lst_points[min_ind]
 
-
-
-
 #initial centroid point of target car
 previousCentroid = list()
 

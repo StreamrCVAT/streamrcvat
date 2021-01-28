@@ -55,3 +55,14 @@ for frame in frames
 
 
 Dataset - 385 - 970
+
+
+RELATED TO YOLO Model (JAN 28, 2021)
+
+1) When exiting the while loop (alertFrame32), start tracking the object based on previous frame
+2) Write the tracked object coordinate in new text file (Track the YOLO output live) -> YOLO_OUTPUT_TRACKED_PATH -> Display them in the UI
+3) On reaching the 33rd frame, create 4 different base models
+4) Check code for Linear interpolation (https://github.com/sanjaytharagesh31/Annotation/blob/prototype/Old%20trials/linear_interpolation_code.py), and decide a pipeline
+
+
+

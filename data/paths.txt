@@ -3,3 +3,4 @@ e:\General\Personal\Pro\Intel Annotation pro\Repo\Annotation\data\yoloCoordinate
 e:\General\Personal\Pro\Intel Annotation pro\Repo\Annotation\data\modelBCoordinates
 e:\General\Personal\Pro\Intel Annotation pro\Repo\Annotation\data\linearInterpolCoordinates
 e:\General\Personal\Pro\Intel Annotation pro\Repo\Annotation\data\finalCoordinates
+e:\General\Personal\Pro\Intel Annotation pro\Repo\Annotation\data\yoloTrackedCoordinates
