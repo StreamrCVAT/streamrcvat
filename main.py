@@ -14,7 +14,7 @@ def alertFrame32():
     finalPath = os.path.dirname(os.path.realpath(__file__)) + "\\data\\" + FINAL_UI_OUTPUT_PATH
     while(True):
         print(len(os.listdir(finalPath)))
-        if (len(os.listdir(finalPath)) == batchSize):
+        if (len(os.listdir(finalPath)) == BATCH_SIZE):
             return finalPath + "\\" + os.listdir(finalPath)[-1]   
 
 def main():
@@ -24,8 +24,9 @@ def main():
         firstCentroid = helper.getFrameCentroid(batchLastFileName)
         yoloTracker.trackObject(firstCentroid) # Enable live YOLO tracker for the object
         print("YOLO Tracker completed!")
+
     except:
-        print("")
+        print("Error in YOLO tracking")
 
 if __name__ == '__main__':
     main()
