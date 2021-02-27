@@ -11,7 +11,7 @@ def getFilesPathAsList(folder):
 	return files_path
 
 # Return the nearest point
-def objectInNextFrame(listOfCoordinates, centroid_point): #([[1,2,3,4], ..] , [1, 2])
+def objectInNextFrame(listOfCoordinates, centroid_point): #([[1,2,3,4], [1,2,3,4] ..] , [1, 2])
     min_dist = 10000
     min_ind = -1
     for ind, point in enumerate(listOfCoordinates):
@@ -27,8 +27,8 @@ def trackObject(previousObjectCentroid):
     yoloOutputPath = helper.absolutePathConverter + "\\data\\" + YOLO_OUTPUT_PATH
     yoloOutputPathFiles = getFilesPathAsList(yoloOutputPath)
 
-    # Iterate through each filename in the YOLO output folder
-    for yoloOutputPathFile in yoloOutputPathFiles:
+    # Iterate through each filename in the YOLO output folder - start tracking from batchSize(32)
+    for yoloOutputPathFile in yoloOutputPathFiles[batchSize:]:
 
         # Open and read contents from the file
         file = open(yoloOutputPathFile, 'r')
@@ -62,8 +62,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-
-
-    

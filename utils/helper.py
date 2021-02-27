@@ -15,3 +15,15 @@ def euclideanDistance(point1, point2):
 def absolutePathConverter(relativePath):
     ABSOLUTE_PATH = os.path.dirname(os.path.realpath(__file__))
     return ABSOLUTE_PATH
+
+# Get the centroid for the Human annotated file
+def getFrameCentroid(fileName, fileDir):
+    filePath = absolutePathConverter("\\data\\" + fileDir + "\\" + fileName)
+    try:
+        with open(filePath, 'r') as file: # VERIFY THE FILE NAME
+            frameCoors = file.read()
+            frameCentroid = centroid(list(frameCoors.split()))
+            return frameCentroid
+    except:
+        print("File not found")
+        return    

@@ -13,26 +13,18 @@ ABSOLUTE_PATH = os.path.dirname(os.path.realpath(__file__))
 def alertFrame32():
     finalPath = os.path.dirname(os.path.realpath(__file__)) + "\\data" + FINAL_UI_OUTPUT_PATH
     while(True):
-        if (len(os.listdir(finalPath)) > 32):
-            break
-    return True   
-
-# Get the centroid for the Human annotated frame
-def getFrameCentroid(fileName):
-    framePath = ABSOLUTE_PATH + "\\data\\" + FINAL_UI_OUTPUT_PATH + "\\" + fileName
-    try:
-        with open(framePath, 'r') as frame: # VERIFY THE FILE NAME
-            frameCoors = frame.read()
-            frameCentroid = helper.centroid(list(frameCoors.split()))
-            return frameCentroid
-    except:
-        print("File not found")
-        return
+        if (len(os.listdir(finalPath)) == batchSize):
+            return os.listdir(finalPath)[-1]   
 
 def main():
-    firstCentroid = getFrameCentroid("frame-001.txt")
-    yoloTracker.trackObject(firstCentroid) # Enable live YOLO tracker for the object
-    print("YOLO Tracker completed!")
+    # firstCentroid = getFrameCentroid("frame-001.txt")
+    try:
+        batchLastFileName = alertFrame32()
+        firstCentroid = helper.getFrameCentroid(batchLastFileName, FINAL_UI_OUTPUT_PATH)
+        yoloTracker.trackObject(firstCentroid) # Enable live YOLO tracker for the object
+        print("YOLO Tracker completed!")
+    except:
+        print("")
 
 if __name__ == '__main__':
     main()
