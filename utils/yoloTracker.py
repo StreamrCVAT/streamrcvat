@@ -24,7 +24,7 @@ def objectInNextFrame(listOfCoordinates, centroid_point): #([[1,2,3,4], [1,2,3,4
 # Track the object
 def trackObject(previousObjectCentroid):
     # Path to the YOLO output folder
-    yoloOutputPath = helper.absolutePathConverter + "\\data\\" + YOLO_OUTPUT_PATH
+    yoloOutputPath = ABSOLUTE_PATH + "\\data\\" + YOLO_OUTPUT_PATH
     yoloOutputPathFiles = getFilesPathAsList(yoloOutputPath)
 
     # Iterate through each filename in the YOLO output folder - start tracking from batchSize(32)
@@ -41,7 +41,7 @@ def trackObject(previousObjectCentroid):
         objectInCurrentFrame = objectInNextFrame(lines, previousObjectCentroid)
         print(yoloOutputPathFile[-7:-4], objectInCurrentFrame)
 
-        with open(os.getcwd()+"\\ YOLO_OUTPUT_TRACKED_PATH \\{}.txt".format(yoloOutputPathFile[-12:-4]), 'w') as new_file:
+        with open(ABSOLUTE_PATH + "\\data\\" + YOLO_OUTPUT_TRACKED_PATH + "\\{}.txt".format(yoloOutputPathFile[-12:-4]), 'w') as new_file:
             new_file.write('car '+' '.join(map(str, objectInCurrentFrame))+'\n')
 
 # Accept the centroid via CLI

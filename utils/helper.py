@@ -17,12 +17,11 @@ def absolutePathConverter(relativePath):
     return ABSOLUTE_PATH
 
 # Get the centroid for the Human annotated file
-def getFrameCentroid(fileName, fileDir):
-    filePath = absolutePathConverter("\\data\\" + fileDir + "\\" + fileName)
+def getFrameCentroid(filePath):
     try:
         with open(filePath, 'r') as file: # VERIFY THE FILE NAME
             frameCoors = file.read()
-            frameCentroid = centroid(list(frameCoors.split()))
+            frameCentroid = centroid(list(map(int,frameCoors.split()[1:])))
             return frameCentroid
     except:
         print("File not found")

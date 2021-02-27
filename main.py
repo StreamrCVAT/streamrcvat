@@ -11,16 +11,17 @@ ABSOLUTE_PATH = os.path.dirname(os.path.realpath(__file__))
 
 # To alert when annotation for 32 frames are over
 def alertFrame32():
-    finalPath = os.path.dirname(os.path.realpath(__file__)) + "\\data" + FINAL_UI_OUTPUT_PATH
+    finalPath = os.path.dirname(os.path.realpath(__file__)) + "\\data\\" + FINAL_UI_OUTPUT_PATH
     while(True):
+        print(len(os.listdir(finalPath)))
         if (len(os.listdir(finalPath)) == batchSize):
-            return os.listdir(finalPath)[-1]   
+            return finalPath + "\\" + os.listdir(finalPath)[-1]   
 
 def main():
     # firstCentroid = getFrameCentroid("frame-001.txt")
     try:
         batchLastFileName = alertFrame32()
-        firstCentroid = helper.getFrameCentroid(batchLastFileName, FINAL_UI_OUTPUT_PATH)
+        firstCentroid = helper.getFrameCentroid(batchLastFileName)
         yoloTracker.trackObject(firstCentroid) # Enable live YOLO tracker for the object
         print("YOLO Tracker completed!")
     except:
