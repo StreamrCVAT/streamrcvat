@@ -72,3 +72,4 @@ TODO: Feb 28, 2021
 4) Connecting Front-end to Back-end using API (optional)
 5) Testing UI + Backend
 6) Find alternative for reading files from UI 
+7) Change absolute path in batch_train()

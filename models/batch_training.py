@@ -77,6 +77,7 @@ def batch_train(side_name):
         image = image.astype('float32')
         image /= 255.0
         strips = strip(image, line1[1], line1[0], line1[3], line1[2]) #args: img, xmin, ymin, xmax, ymax
+
         if(side_name == 'right'):
             right_part = cv2.resize(strips[0], (MODEL_HEIGHT, MODEL_WIDTH))
             X_train_image.append(right_part)
@@ -103,6 +104,6 @@ def batch_train(side_name):
     print('X_train_image shape: ', X_train_image.shape)
     print('y_train shape', y_train.shape)
 
-    hist = side_model.fit(X_train_image[:BATCH_SIZE,:,:,:], y_train[:BATCH_SIZE], epochs=15)
+    side_model.fit(X_train_image[:BATCH_SIZE,:,:,:], y_train[:BATCH_SIZE], epochs=15)
 
     return side_model
