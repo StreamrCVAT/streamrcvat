@@ -83,7 +83,7 @@ def retrain_model(side_name, image_path, yolo_coor, human_coor):
         right_model.fit([[right_part]], [[human_coor[3]-yolo_coor[3]]], epochs=10, callbacks=[es])
                 
 
-def check_error(image_path, yolo_coor, modelB_coor, human_coor): #[ymin xmin ymax xmax]
+def fix_errors(image_path, yolo_coor, modelB_coor, human_coor): #[ymin xmin ymax xmax]
     
     #check for bottom side
     if((modelB_coor[2] <= yolo_coor[2]-3) or (modelB_coor[2] >= yolo_coor[2]+3)): #modelB wrongly predicts
@@ -159,7 +159,7 @@ def main():
 
     while(True):
         if (len(os.listdir(finalCoordinatePath)) == frame_number):
-            check_error(image_path, yolo_coor, modelB_coor, human_coor): #[ymin xmin ymax xmax] 
+            fix_errors(image_path, yolo_coor, modelB_coor, human_coor): #[ymin xmin ymax xmax] 
         
 
 

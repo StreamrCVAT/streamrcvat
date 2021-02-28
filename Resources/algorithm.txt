@@ -65,4 +65,10 @@ RELATED TO YOLO Model (JAN 28, 2021)
 4) Check code for Linear interpolation (https://github.com/sanjaytharagesh31/Annotation/blob/prototype/Old%20trials/linear_interpolation_code.py), and decide a pipeline
 
 
-
+TODO: Feb 28, 2021
+1) Call models.model from outside main.py
+2) Call outside global_params.py into models.model.global_params
+3) Modularizing model.py 
+4) Connecting Front-end to Back-end using API (optional)
+5) Testing UI + Backend
+6) Find alternative for reading files from UI 
