@@ -73,3 +73,16 @@ TODO: Feb 28, 2021
 5) Testing UI + Backend
 6) Find alternative for reading files from UI 
 7) Change absolute path in batch_train()
+
+TODO: March 14, 2021
+
+General
+--> import files inside models folder has to be rewritten
+1) Make previous button only to view the frame and coordinates (not to modify the coordinates)
+2) On clicking Upload button - change default to open current directory
+3) What is reset button functionality?
+4) Next button not working.
+
+API
+1) Make a condition check in the front-end for the frame number.
+    If frame number >= 32, then make an API POST call with parameter as the frame filename and frame number.

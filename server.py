@@ -28,13 +28,18 @@ import math
 from numpy.random import seed
 seed(1)
 
-from global_params import *
-from batch_training import *
+from models import batch_training
+from models import create_models
+from models import global_params
+from models import stripping_edges
 
-right_model
-bottom_model
-left_model 
-top_model 
+from main import *
+
+from flask import Flask, request, render_template, jsonify
+
+# app = Flask()
+app = Flask(__name__,template_folder="templates")
+
 
 def retrain_model(side_name, image_path, yolo_coor, human_coor):
 
@@ -142,26 +147,50 @@ def modelB_prediction(image_path, yolo_coor):
     return predictions 
 
 
-def main():
-
+def createBaseModels():
+    print("b1")
     global right_model
     global bottom_model
     global left_model 
     global top_model 
+    print("b2")
+    right_model = batch_training.batch_train('right')
+    print("b3")
+    bottom_model = batch_training.batch_train('bottom')
+    left_model = batch_training.batch_train('left')
+    top_model = batch_training.batch_train('top')
 
-    right_model = batch_train('right')
-    bottom_model = batch_train('bottom')
-    left_model = batch_train('left')
-    top_model = batch_train('top')
+@app.route("/")
+def home():
+    return render_template('form.html')
 
-    finalCoordinatePath = os.path.dirname(os.path.realpath(__file__)) + "\\data\\" + FINAL_UI_OUTPUT_PATH
-    frame_number = BATCH_SIZE
+@app.route("/trigger", methods=['POST'])
+def triggerAPI():
+    if request.method == 'POST':
+        try:
+            # frame_number = request.args.get('frame_number')
+            # frame_filename = request.args.get('frame_filename')
+            
+            frame_number = request.form['frame_number']
+            frame_filename = request.form['frame_filename']
+            print(type(frame_number))
+            print("1")
+            if(frame_number == "32"):
+                print("2")
+                createYOLOTracker(frame_filename)
+                print("3")
+                createBaseModels()
+                print("4")
+                return "Success"
+            else:
+                print("in else case")
+                return "Success"
 
-    while(True):
-        if (len(os.listdir(finalCoordinatePath)) == frame_number):
-            fix_errors(image_path, yolo_coor, modelB_coor, human_coor): #[ymin xmin ymax xmax] 
-
-    return True
+        except:
+            print("Excep Error")
+            return "Err"
+    return "Success"
     
-if __name__ == '__main__':
-    main()
+
+if (__name__=='__main__'):
+    app.run(debug=True)

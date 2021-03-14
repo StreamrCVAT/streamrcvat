@@ -22,8 +22,8 @@ import matplotlib.pyplot as plt
 import math 
 
 from global_params import *
-from stripping_edges import *
-from create_models import *
+from models.stripping_edges import *
+from models.create_models import *
 
 from numpy.random import seed
 seed(1)
