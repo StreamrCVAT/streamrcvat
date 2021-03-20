@@ -30,8 +30,8 @@ def createYOLOTracker(batchLastFileName):
     except:
         print("Error in YOLO tracking")
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
 
 
 

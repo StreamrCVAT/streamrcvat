@@ -5,21 +5,22 @@ import pandas as pd
 import numpy as np 
 import cv2
 import os
-from keras.layers import Conv2D
-from keras.layers import Input
-from keras.layers import Activation
-from keras.layers import BatchNormalization
-from keras.utils import plot_model
-from keras.models import Model
-from keras.layers import Dense
-from keras.layers import Flatten
-from keras.callbacks import ModelCheckpoint
-from keras.callbacks import EarlyStopping
-from keras.layers.pooling import MaxPooling2D
-from keras.layers.merge import concatenate
-from keras.preprocessing.image import load_img
-from keras.preprocessing.image import img_to_array
-from keras.preprocessing.image import ImageDataGenerator
+ 
+from tensorflow.keras.layers import Conv2D
+from tensorflow.keras.layers import Input
+from tensorflow.keras.layers import Activation
+from tensorflow.keras.layers import BatchNormalization
+from tensorflow.keras.utils import plot_model
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Flatten
+from tensorflow.keras.callbacks import ModelCheckpoint
+from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.layers import MaxPooling2D
+from tensorflow.keras.layers import concatenate
+from tensorflow.keras.preprocessing.image import load_img
+from tensorflow.keras.preprocessing.image import img_to_array
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from matplotlib import pyplot
 from PIL import Image, ImageDraw 
 import matplotlib.pyplot as plt
@@ -148,14 +149,13 @@ def modelB_prediction(image_path, yolo_coor):
 
 
 def createBaseModels():
-    print("b1")
+    
     global right_model
     global bottom_model
     global left_model 
     global top_model 
-    print("b2")
+    
     right_model = batch_training.batch_train('right')
-    print("b3")
     bottom_model = batch_training.batch_train('bottom')
     left_model = batch_training.batch_train('left')
     top_model = batch_training.batch_train('top')
@@ -173,23 +173,18 @@ def triggerAPI():
             
             frame_number = request.form['frame_number']
             frame_filename = request.form['frame_filename']
-            print(type(frame_number))
-            print("1")
+            
             if(frame_number == "32"):
-                print("2")
                 createYOLOTracker(frame_filename)
-                print("3")
                 createBaseModels()
-                print("4")
-                return "Success"
+                return "32=Success"
             else:
-                print("in else case")
-                return "Success"
+                return "!32-Success"
 
         except:
             print("Excep Error")
-            return "Err"
-    return "Success"
+            return "Error"
+    return "GET-Success"
     
 
 if (__name__=='__main__'):

@@ -28,7 +28,7 @@ def trackObject(previousObjectCentroid):
     yoloOutputPathFiles = getFilesPathAsList(yoloOutputPath)
     
     # Iterate through each filename in the YOLO output folder - start tracking from batchSize(32)
-    for yoloOutputPathFile in yoloOutputPathFiles[BATCH_SIZE:]:
+    for yoloOutputPathFile in yoloOutputPathFiles:
 
         # Open and read contents from the file
         file = open(yoloOutputPathFile, 'r')
