@@ -39,6 +39,7 @@ def trackObject(previousObjectCentroid):
         # print(lines)
 
         objectInCurrentFrame = objectInNextFrame(lines, previousObjectCentroid)
+        previousObjectCentroid = objectInCurrentFrame
         print(yoloOutputPathFile[-7:-4], objectInCurrentFrame)
 
         with open(ABSOLUTE_PATH + "\\data\\" + YOLO_OUTPUT_TRACKED_PATH + "\\{}.txt".format(yoloOutputPathFile[-12:-4]), 'w') as new_file:
