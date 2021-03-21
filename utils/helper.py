@@ -18,6 +18,7 @@ def absolutePathConverter(relativePath):
 
 # Get the centroid for the Human annotated file
 def getFrameCentroid(filePath):
+    print(filePath)
     try:
         with open(filePath, 'r') as file: # VERIFY THE FILE NAME
             frameCoors = file.read()

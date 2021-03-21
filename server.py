@@ -33,6 +33,7 @@ from models import batch_training
 from models import create_models
 from models import global_params
 from models import stripping_edges
+from utils import yoloTracker
 
 from main import *
 
@@ -174,8 +175,13 @@ def triggerAPI():
             frame_number = request.form['frame_number']
             frame_filename = request.form['frame_filename']
             
+            if(frame_number == '1'):
+                yoloTracker.trackNextObject(0, frame_filename)
+            yoloTracker.trackNextObject(frame_number, frame_filename)
+
+            
             if(frame_number == "32"):
-                createYOLOTracker(frame_filename)
+                # createYOLOTracker(frame_filename)
                 createBaseModels()
                 return "32=Success"
             else:
