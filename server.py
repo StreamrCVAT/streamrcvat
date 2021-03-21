@@ -42,6 +42,11 @@ from flask import Flask, request, render_template, jsonify
 # app = Flask()
 app = Flask(__name__,template_folder="templates")
 
+ABSOLUTE_PATH = os.path.dirname(os.path.realpath(__file__))
+frame_path = ABSOLUTE_PATH+"\\data\\"+FRAMES_PATH+'\\'
+yolo_coor_path = ABSOLUTE_PATH+"\\data\\"+YOLO_OUTPUT_TRACKED_PATH+'\\'
+modelB_coor_path = ABSOLUTE_PATH+"\\data\\"+MODEL_B_OUTPUT_PATH+'\\'
+human_coor_path = ABSOLUTE_PATH+"\\data\\"+FINAL_UI_OUTPUT_PATH+'\\'
 
 def retrain_model(side_name, image_path, yolo_coor, human_coor):
 
@@ -172,20 +177,44 @@ def triggerAPI():
             # frame_number = request.args.get('frame_number')
             # frame_filename = request.args.get('frame_filename')
             
-            frame_number = request.form['frame_number']
+            frame_number = int(request.form['frame_number'])
             frame_filename = request.form['frame_filename']
             
-            if(frame_number == '1'):
+            if(frame_number == 1):
                 yoloTracker.trackNextObject(0, frame_filename)
             yoloTracker.trackNextObject(frame_number, frame_filename)
 
             
-            if(frame_number == "32"):
-                # createYOLOTracker(frame_filename)
-                createBaseModels()
-                return "32=Success"
+            if(frame_number >= BATCH_SIZE):
+                # Image path 
+                # yolo coor
+                # modelB coor
+                # human coor
+
+                cur_image_path = frame_path+'frame-' + str(frame_number).zfill(3) + '.jpg'
+                next_image_path = frame_path+'frame-' + str(frame_number+1).zfill(3) + '.jpg'
+                cur_yolo_path = yolo_coor_path+frame_filename
+                next_yolo_path = getFilesPathAsList(yolo_coor_path)[int(frame_number)]
+                cur_modelB_path = modelB_coor_path+frame_filename
+                cur_human_path = human_coor_path+frame_filename
+
+                cur_yolo_coor = list(map(float, open(cur_yolo_path, 'r').readline().split()[1:])) #[ymin xmin ymax xmax]
+                next_yolo_coor = list(map(float, open(next_yolo_path, 'r').readline().split()[1:]))
+                cur_modelB_coor = list(map(float, open(cur_modelB_path, 'r').readline().split()[1:]))
+                cur_human_coor = list(map(float, open(cur_human_path, 'r').readline().split()[1:]))
+
+                if (frame_number == BATCH_SIZE):
+                    # createYOLOTracker(frame_filename)
+                    createBaseModels()
+                    return "32=Success"
+                else:
+                    fix_errors(cur_image_path, cur_yolo_coor, cur_modelB_coor, cur_human_coor)
+                modelB_prediction(next_image_path, next_yolo_coor)
+
+                return ">=32-Success"
+
             else:
-                return "!32-Success"
+                return "<32-Success"
 
         except:
             print("Excep Error")

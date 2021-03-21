@@ -86,3 +86,12 @@ General
 API
 1) Make a condition check in the front-end for the frame number.
     If frame number >= 32, then make an API POST call with parameter as the frame filename and frame number.
+
+
+When at 32:
+    1. Train base models
+    2. Predict for 33
+When at 33:
+    1. If error is there    
+        a. Retrain the model based on latest changes 
+    2. Predict for 34
