@@ -40,7 +40,7 @@ from main import *
 from flask import Flask, request, render_template, jsonify
 
 # app = Flask()
-app = Flask(__name__,template_folder="templates")
+app = Flask(__name__, template_folder="templates")
 
 ABSOLUTE_PATH = os.path.dirname(os.path.realpath(__file__))
 frame_path = ABSOLUTE_PATH+"\\data\\"+FRAMES_PATH+'\\'
@@ -114,7 +114,7 @@ def fix_errors(image_path, yolo_coor, modelB_coor, human_coor): #[ymin xmin ymax
         retrain_model('right', image_path, yolo_coor, human_coor)
 
 
-def modelB_prediction(image_path, yolo_coor):
+def modelB_prediction(image_path, yolo_coor, next_modelB_path):
 
     predictions = [0, 0, 0, 0]
 
@@ -150,8 +150,10 @@ def modelB_prediction(image_path, yolo_coor):
     top_part = cv2.resize(strips[3], (MODEL_HEIGHT, MODEL_WIDTH))
     top_pre = top_model.predict([[top_part]])
     predictions[0] = yolo_coor[0]+top_pre[0][0]
-                
-    return predictions 
+    
+    # write the modelB predictions to modelB prediction folder
+    with open(next_modelB_path, 'w') as new_file:
+        new_file.write('car '+' '.join(map(str, predictions))+'\n')
 
 
 def createBaseModels():
@@ -196,20 +198,21 @@ def triggerAPI():
                 cur_yolo_path = yolo_coor_path+frame_filename
                 next_yolo_path = getFilesPathAsList(yolo_coor_path)[int(frame_number)]
                 cur_modelB_path = modelB_coor_path+frame_filename
+                next_modelB_path = modelB_coor_path+'\\'+next_yolo_path.split('\\')[-1]
                 cur_human_path = human_coor_path+frame_filename
 
                 cur_yolo_coor = list(map(float, open(cur_yolo_path, 'r').readline().split()[1:])) #[ymin xmin ymax xmax]
                 next_yolo_coor = list(map(float, open(next_yolo_path, 'r').readline().split()[1:]))
                 cur_modelB_coor = list(map(float, open(cur_modelB_path, 'r').readline().split()[1:]))
                 cur_human_coor = list(map(float, open(cur_human_path, 'r').readline().split()[1:]))
-
+                
                 if (frame_number == BATCH_SIZE):
                     # createYOLOTracker(frame_filename)
                     createBaseModels()
                     return "32=Success"
                 else:
                     fix_errors(cur_image_path, cur_yolo_coor, cur_modelB_coor, cur_human_coor)
-                modelB_prediction(next_image_path, next_yolo_coor)
+                modelB_prediction(next_image_path, next_yolo_coor, next_modelB_path)
 
                 return ">=32-Success"
 
