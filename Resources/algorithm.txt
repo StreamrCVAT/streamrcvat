@@ -111,3 +111,18 @@ When at 33:
 6) Enable confirm dialog box when the user closes the annotation tool.
 7) Instead of tracking the coordinates by reading the files, use DB to store the coordinates and fetch the values
 
+-----------------------------------------------------------------------------------
+April 17, 2021 - End to end Testing
+
+Intial all the folders will be empty
+
+1st frame -> user annotate -> (API call) finalCoors saved
+
+API call -> Yolo coor & modelB for 2nd frame, 
+2nd frame ->
+
+-------------------
+
+1st frame of YOLO ,modelB, linear
+User annotates -> Next -> API call -> YOLO for 2nd frame, modelB for 2nd frame (32 YOLO = modelB) -> Response 200 -> Next frame -> 
+-------------------------------------------------------------------------------------

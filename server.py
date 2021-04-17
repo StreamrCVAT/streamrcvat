@@ -183,9 +183,11 @@ def triggerAPI():
             frame_filename = request.form['frame_filename']
             
             if(frame_number == 1):
-                yoloTracker.trackNextObject(0, frame_filename)
-            yoloTracker.trackNextObject(frame_number, frame_filename)
+                yolo_next_frame = yoloTracker.trackNextObject(0, frame_filename)
+            yolo_next_frame = yoloTracker.trackNextObject(frame_number, frame_filename)
 
+            if (frame_number < BATCH_SIZE):
+                helper.copy_file_to(yolo_next_frame, modelB_coor_path + yolo_next_frame.split("\\")[-1])
             
             if(frame_number >= BATCH_SIZE):
                 # Image path 

@@ -42,8 +42,10 @@ def trackNextObject(frame_number, batchLastFileName):
     objectInCurrentFrame = objectInNextFrame(lines, previousObjectCentroid)
     print(yoloOutputPathFile[-7:-4], objectInCurrentFrame)
 
-    with open(ABSOLUTE_PATH + "\\data\\" + YOLO_OUTPUT_TRACKED_PATH + "\\{}.txt".format(yoloOutputPathFile[-12:-4]), 'w') as new_file:
+    new_file_directory = ABSOLUTE_PATH + "\\data\\" + YOLO_OUTPUT_TRACKED_PATH + "\\{}.txt".format(yoloOutputPathFile[-12:-4])
+    with open(new_file_directory, 'w') as new_file:
         new_file.write('car '+' '.join(map(str, objectInCurrentFrame))+'\n')
+    return new_file_directory
 
 # Track the object
 def trackObject(previousObjectCentroid):
