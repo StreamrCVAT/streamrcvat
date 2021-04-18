@@ -176,11 +176,12 @@ def home():
 def triggerAPI():
     if request.method == 'POST':
         try:
-            # frame_number = request.args.get('frame_number')
-            # frame_filename = request.args.get('frame_filename')
-            
-            frame_number = int(request.form['frame_number'])
-            frame_filename = request.form['frame_filename']
+            request_data = request.get_json()
+            frame_number = request_data['frame_number']
+            frame_filename = request_data['frame_filename']
+            print(frame_number, frame_filename)
+            # frame_number = int(request.form['frame_number'])
+            # frame_filename = request.form['frame_filename']
             
             if(frame_number == 1):
                 yolo_next_frame = yoloTracker.trackNextObject(0, frame_filename)
@@ -211,20 +212,20 @@ def triggerAPI():
                 if (frame_number == BATCH_SIZE):
                     # createYOLOTracker(frame_filename)
                     createBaseModels()
-                    return "32=Success"
+                    return {'message': "32=Success"}
                 else:
                     fix_errors(cur_image_path, cur_yolo_coor, cur_modelB_coor, cur_human_coor)
                 modelB_prediction(next_image_path, next_yolo_coor, next_modelB_path)
 
-                return ">=32-Success"
+                return {'message': ">=32-Success"}
 
             else:
-                return "<32-Success"
+                return {'message': "<32-Success"}
 
         except:
             print("Excep Error")
-            return "Error"
-    return "GET-Success"
+            return {'message': "Error"}
+    return {'message': "GET-Success"}
     
 
 if (__name__=='__main__'):
