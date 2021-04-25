@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np 
 import cv2
 import os
- 
 
 from tensorflow.keras.layers import Conv2D
 from tensorflow.keras.layers import Input
@@ -30,6 +29,8 @@ from models.create_models import *
 from numpy.random import seed
 seed(1)
 
+ABSOLUTE_PATH = "\\".join(os.path.dirname(os.path.realpath(__file__)).split("\\")[:-1])
+print(ABSOLUTE_PATH)
 
 def min_max_scalar(x, xmin, xmax):
     return (x-xmin)/(xmax-xmin)
@@ -37,9 +38,9 @@ def min_max_scalar(x, xmin, xmax):
 def batch_train(side_name):
     
     # Paths to coordinate and frames dirs
-    yolo_output_dir = 'D:\\smart_space_lab\\Intel_Annotation\\code\\DemoCode\\clones\\Annotation\\data\\' + YOLO_OUTPUT_TRACKED_PATH
-    human_annotated_dir = 'D:\\smart_space_lab\\Intel_Annotation\\code\\DemoCode\\clones\\Annotation\\data\\' + FINAL_UI_OUTPUT_PATH
-    frames_dir = 'D:\\smart_space_lab\\Intel_Annotation\\code\\DemoCode\\clones\\Annotation\\data\\' + FRAMES_PATH 
+    yolo_output_dir = ABSOLUTE_PATH + "\\data\\" + YOLO_OUTPUT_TRACKED_PATH + "\\"
+    human_annotated_dir = ABSOLUTE_PATH + "\\data\\" + FINAL_UI_OUTPUT_PATH + "\\"
+    frames_dir = ABSOLUTE_PATH + "\\data\\" + FRAMES_PATH + "\\"
     print('----------------PATH TO DIRECTORIES ARE SET----------------')
 
     # Create the model
