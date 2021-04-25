@@ -48,126 +48,126 @@ yolo_coor_path = ABSOLUTE_PATH+"\\data\\"+YOLO_OUTPUT_TRACKED_PATH+'\\'
 modelB_coor_path = ABSOLUTE_PATH+"\\data\\"+MODEL_B_OUTPUT_PATH+'\\'
 human_coor_path = ABSOLUTE_PATH+"\\data\\"+FINAL_UI_OUTPUT_PATH+'\\'
 
-def retrain_model(side_name, image_path, yolo_coor, human_coor):
+class Server:
+    def __init__(self):
+        super().__init__()
+        self.right_model = None
+        self.left_model = None
+        self.top_model = None
+        self.bottom_model = None
 
-    global right_model
-    global bottom_model
-    global left_model 
-    global top_model 
+    def retrain_model(self, side_name, image_path, yolo_coor, human_coor):
 
-    #read the original frame
-    image = cv2.imread(image_path)
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        #read the original frame
+        image = cv2.imread(image_path)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-    # scale pixel values to [0, 1]
-    image = image.astype('float32')
-    strips = stripping_edges.strip(image, yolo_coor[1], yolo_coor[0], yolo_coor[3], yolo_coor[2]) #args: img, xmin, ymin, xmax, ymax
-    strips[0] /= 255.0
-    strips[1] /= 255.0
-    strips[2] /= 255.0
-    strips[3] /= 255.0
+        # scale pixel values to [0, 1]
+        image = image.astype('float32')
+        strips = self.stripping_edges.strip(image, yolo_coor[1], yolo_coor[0], yolo_coor[3], yolo_coor[2]) #args: img, xmin, ymin, xmax, ymax
+        strips[0] /= 255.0
+        strips[1] /= 255.0
+        strips[2] /= 255.0
+        strips[3] /= 255.0
 
-    # checkpoint
-    es = EarlyStopping(monitor='mae', mode='min', patience=10, restore_best_weights=True, verbose=1)
+        # checkpoint
+        es = EarlyStopping(monitor='mae', mode='min', patience=10, restore_best_weights=True, verbose=1)
 
-    if(side_name == 'bottom'):
-        bottom_part = cv2.resize(strips[1], (MODEL_HEIGHT, MODEL_WIDTH))
-        bottom_pre = bottom_model.predict([[bottom_part]])
+        if(side_name == 'bottom'):
+            bottom_part = cv2.resize(strips[1], (MODEL_HEIGHT, MODEL_WIDTH))
+            bottom_pre = self.bottom_model.predict([[bottom_part]])
 
-        bottom_model.fit([[bottom_part]], [[human_coor[2]-yolo_coor[2]]], epochs=10, callbacks=[es])
+            self.bottom_model.fit([[bottom_part]], [[human_coor[2]-yolo_coor[2]]], epochs=10, callbacks=[es])
 
-    elif(side_name == 'left'):
-        left_part = cv2.resize(strips[2], (MODEL_HEIGHT, MODEL_WIDTH))
-        left_pre = left_model.predict([[left_part]])
+        elif(side_name == 'left'):
+            left_part = cv2.resize(strips[2], (MODEL_HEIGHT, MODEL_WIDTH))
+            left_pre = self.left_model.predict([[left_part]])
 
-        left_model.fit([[left_part]], [[human_coor[1]-yolo_coor[1]]], epochs=10, callbacks=[es])
+            self.left_model.fit([[left_part]], [[human_coor[1]-yolo_coor[1]]], epochs=10, callbacks=[es])
 
-    elif(side_name == 'top'):
-        top_part = cv2.resize(strips[3], (MODEL_HEIGHT, MODEL_WIDTH))
-        top_pre = top_model.predict([[top_part]])
+        elif(side_name == 'top'):
+            top_part = cv2.resize(strips[3], (MODEL_HEIGHT, MODEL_WIDTH))
+            top_pre = self.top_model.predict([[top_part]])
+                    
+            self.top_model.fit([[top_part]], [[human_coor[0]-yolo_coor[0]]], epochs=10, callbacks=[es])
+
+        else: #right side
+            right_part = cv2.resize(strips[0], (MODEL_HEIGHT, MODEL_WIDTH))
+            right_pre = self.right_model.predict([[right_part]])
+
+            self.right_model.fit([[right_part]], [[human_coor[3]-yolo_coor[3]]], epochs=10, callbacks=[es])
                 
-        top_model.fit([[top_part]], [[human_coor[0]-yolo_coor[0]]], epochs=10, callbacks=[es])
 
-    else: #right side
+    def fix_errors(self, image_path, yolo_coor, modelB_coor, human_coor): #[ymin xmin ymax xmax]
+        
+        #check for bottom side
+        if((modelB_coor[2] <= yolo_coor[2]-3) or (modelB_coor[2] >= yolo_coor[2]+3)): #modelB wrongly predicts
+            self.retrain_model('bottom', image_path, yolo_coor, human_coor)
+        
+        #check for left side
+        if((modelB_coor[1] <= yolo_coor[1]-3) or (modelB_coor[1] >= yolo_coor[1]+3)): #modelB wrongly predicts
+            self.retrain_model('left', image_path, yolo_coor, human_coor)
+
+        #check for top side
+        if((modelB_coor[0] <= yolo_coor[0]-3) or (modelB_coor[0] >= yolo_coor[0]+3)): #modelB wrongly predicts
+            self.retrain_model('top', image_path, yolo_coor, human_coor)
+
+        #check for right side
+        if((modelB_coor[3] <= yolo_coor[3]-3) or (modelB_coor[3] >= yolo_coor[3]+3)): #modelB wrongly predicts
+            self.retrain_model('right', image_path, yolo_coor, human_coor)
+
+
+    def modelB_prediction(self, image_path, yolo_coor, next_modelB_path):
+
+        predictions = [0, 0, 0, 0]
+
+        #read the original frame
+        image = cv2.imread(image_path)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+        # scale pixel values to [0, 1]
+        image = image.astype('float32')
+        # image /= 255.0
+        strips = stripping_edges.strip(image, yolo_coor[1], yolo_coor[0], yolo_coor[3], yolo_coor[2]) #args: img, xmin, ymin, xmax, ymax
+        strips[0] /= 255.0
+        strips[1] /= 255.0
+        strips[2] /= 255.0
+        strips[3] /= 255.0
+
+        #right side
         right_part = cv2.resize(strips[0], (MODEL_HEIGHT, MODEL_WIDTH))
-        right_pre = right_model.predict([[right_part]])
+        right_pre = self.right_model.predict([[right_part]])
+        predictions[3] = yolo_coor[3]+right_pre[0][0]
 
-        right_model.fit([[right_part]], [[human_coor[3]-yolo_coor[3]]], epochs=10, callbacks=[es])
-                
+        #bottom side
+        bottom_part = cv2.resize(strips[1], (MODEL_HEIGHT, MODEL_WIDTH))
+        bottom_pre = self.bottom_model.predict([[bottom_part]])
+        predictions[2] = yolo_coor[2]+bottom_pre[0][0]
 
-def fix_errors(image_path, yolo_coor, modelB_coor, human_coor): #[ymin xmin ymax xmax]
-    
-    #check for bottom side
-    if((modelB_coor[2] <= yolo_coor[2]-3) or (modelB_coor[2] >= yolo_coor[2]+3)): #modelB wrongly predicts
-        retrain_model('bottom', image_path, yolo_coor, human_coor)
-    
-    #check for left side
-    if((modelB_coor[1] <= yolo_coor[1]-3) or (modelB_coor[1] >= yolo_coor[1]+3)): #modelB wrongly predicts
-        retrain_model('left', image_path, yolo_coor, human_coor)
+        #left side
+        left_part = cv2.resize(strips[2], (MODEL_HEIGHT, MODEL_WIDTH))
+        left_pre = self.left_model.predict([[left_part]])
+        predictions[1] = yolo_coor[1]+left_pre[0][0]
 
-    #check for top side
-    if((modelB_coor[0] <= yolo_coor[0]-3) or (modelB_coor[0] >= yolo_coor[0]+3)): #modelB wrongly predicts
-        retrain_model('top', image_path, yolo_coor, human_coor)
-
-    #check for right side
-    if((modelB_coor[3] <= yolo_coor[3]-3) or (modelB_coor[3] >= yolo_coor[3]+3)): #modelB wrongly predicts
-        retrain_model('right', image_path, yolo_coor, human_coor)
-
-
-def modelB_prediction(image_path, yolo_coor, next_modelB_path):
-
-    predictions = [0, 0, 0, 0]
-
-    #read the original frame
-    image = cv2.imread(image_path)
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-
-    # scale pixel values to [0, 1]
-    image = image.astype('float32')
-    # image /= 255.0
-    strips = stripping_edges.strip(image, yolo_coor[1], yolo_coor[0], yolo_coor[3], yolo_coor[2]) #args: img, xmin, ymin, xmax, ymax
-    strips[0] /= 255.0
-    strips[1] /= 255.0
-    strips[2] /= 255.0
-    strips[3] /= 255.0
-
-    #right side
-    right_part = cv2.resize(strips[0], (MODEL_HEIGHT, MODEL_WIDTH))
-    right_pre = right_model.predict([[right_part]])
-    predictions[3] = yolo_coor[3]+right_pre[0][0]
-
-    #bottom side
-    bottom_part = cv2.resize(strips[1], (MODEL_HEIGHT, MODEL_WIDTH))
-    bottom_pre = bottom_model.predict([[bottom_part]])
-    predictions[2] = yolo_coor[2]+bottom_pre[0][0]
-
-    #left side
-    left_part = cv2.resize(strips[2], (MODEL_HEIGHT, MODEL_WIDTH))
-    left_pre = left_model.predict([[left_part]])
-    predictions[1] = yolo_coor[1]+left_pre[0][0]
-
-    #top side
-    top_part = cv2.resize(strips[3], (MODEL_HEIGHT, MODEL_WIDTH))
-    top_pre = top_model.predict([[top_part]])
-    predictions[0] = yolo_coor[0]+top_pre[0][0]
-    predictions = list(map(int, predictions))
-    # write the modelB predictions to modelB prediction folder
-    with open(next_modelB_path, 'w') as new_file:
-        new_file.write('car '+' '.join(map(str, predictions))+'\n')
+        #top side
+        top_part = cv2.resize(strips[3], (MODEL_HEIGHT, MODEL_WIDTH))
+        top_pre = self.top_model.predict([[top_part]])
+        predictions[0] = yolo_coor[0]+top_pre[0][0]
+        predictions = list(map(int, predictions))
+        # write the modelB predictions to modelB prediction folder
+        with open(next_modelB_path, 'w') as new_file:
+            new_file.write('car '+' '.join(map(str, predictions))+'\n')
 
 
-def createBaseModels():
-    
-    global right_model
-    global bottom_model
-    global left_model 
-    global top_model 
-    
-    right_model = batch_training.batch_train('right')
-    bottom_model = batch_training.batch_train('bottom')
-    left_model = batch_training.batch_train('left')
-    top_model = batch_training.batch_train('top')
-    return
+    def createBaseModels(self):
+        
+        self.right_model = batch_training.batch_train('right')
+        self.bottom_model = batch_training.batch_train('bottom')
+        self.left_model = batch_training.batch_train('left')
+        self.top_model = batch_training.batch_train('top')
+        return
+
+server = Server()
 
 @app.route("/")
 def home():
@@ -212,11 +212,11 @@ def triggerAPI():
             
             if (frame_number == BATCH_SIZE):
                 # createYOLOTracker(frame_filename)
-                createBaseModels()
+                server.createBaseModels()
                 # return {'message': "32=Success"}
             else:
-                fix_errors(cur_image_path, cur_yolo_coor, cur_modelB_coor, cur_human_coor)
-            modelB_prediction(next_image_path, next_yolo_coor, next_modelB_path)
+                server.fix_errors(cur_image_path, cur_yolo_coor, cur_modelB_coor, cur_human_coor)
+            server.modelB_prediction(next_image_path, next_yolo_coor, next_modelB_path)
 
             return {'message': ">=32-Success"}
 
