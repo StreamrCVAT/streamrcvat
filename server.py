@@ -57,14 +57,14 @@ class Server:
         self.bottom_model = None
 
     def retrain_model(self, side_name, image_path, yolo_coor, human_coor):
-
+        print("Retrain mode - Start")
         #read the original frame
         image = cv2.imread(image_path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
         # scale pixel values to [0, 1]
         image = image.astype('float32')
-        strips = self.stripping_edges.strip(image, yolo_coor[1], yolo_coor[0], yolo_coor[3], yolo_coor[2]) #args: img, xmin, ymin, xmax, ymax
+        strips = stripping_edges.strip(image, yolo_coor[1], yolo_coor[0], yolo_coor[3], yolo_coor[2]) #args: img, xmin, ymin, xmax, ymax
         strips[0] /= 255.0
         strips[1] /= 255.0
         strips[2] /= 255.0
@@ -75,46 +75,44 @@ class Server:
 
         if(side_name == 'bottom'):
             bottom_part = cv2.resize(strips[1], (MODEL_HEIGHT, MODEL_WIDTH))
-            bottom_pre = self.bottom_model.predict([[bottom_part]])
 
             self.bottom_model.fit([[bottom_part]], [[human_coor[2]-yolo_coor[2]]], epochs=10, callbacks=[es])
 
         elif(side_name == 'left'):
             left_part = cv2.resize(strips[2], (MODEL_HEIGHT, MODEL_WIDTH))
-            left_pre = self.left_model.predict([[left_part]])
 
             self.left_model.fit([[left_part]], [[human_coor[1]-yolo_coor[1]]], epochs=10, callbacks=[es])
 
         elif(side_name == 'top'):
             top_part = cv2.resize(strips[3], (MODEL_HEIGHT, MODEL_WIDTH))
-            top_pre = self.top_model.predict([[top_part]])
                     
             self.top_model.fit([[top_part]], [[human_coor[0]-yolo_coor[0]]], epochs=10, callbacks=[es])
 
         else: #right side
             right_part = cv2.resize(strips[0], (MODEL_HEIGHT, MODEL_WIDTH))
-            right_pre = self.right_model.predict([[right_part]])
 
             self.right_model.fit([[right_part]], [[human_coor[3]-yolo_coor[3]]], epochs=10, callbacks=[es])
+        print("Retrain mode - Over")
                 
 
     def fix_errors(self, image_path, yolo_coor, modelB_coor, human_coor): #[ymin xmin ymax xmax]
-        
+        print("Fixing errors - Start")
         #check for bottom side
-        if((modelB_coor[2] <= yolo_coor[2]-3) or (modelB_coor[2] >= yolo_coor[2]+3)): #modelB wrongly predicts
+        if(abs(modelB_coor[2] - human_coor[2]) >= 3): #modelB wrongly predicts
             self.retrain_model('bottom', image_path, yolo_coor, human_coor)
         
         #check for left side
-        if((modelB_coor[1] <= yolo_coor[1]-3) or (modelB_coor[1] >= yolo_coor[1]+3)): #modelB wrongly predicts
+        if(abs(modelB_coor[1] - human_coor[1]) >= 3): #modelB wrongly predicts
             self.retrain_model('left', image_path, yolo_coor, human_coor)
 
         #check for top side
-        if((modelB_coor[0] <= yolo_coor[0]-3) or (modelB_coor[0] >= yolo_coor[0]+3)): #modelB wrongly predicts
+        if(abs(modelB_coor[0] - human_coor[0]) >= 3): #modelB wrongly predicts
             self.retrain_model('top', image_path, yolo_coor, human_coor)
 
         #check for right side
-        if((modelB_coor[3] <= yolo_coor[3]-3) or (modelB_coor[3] >= yolo_coor[3]+3)): #modelB wrongly predicts
+        if(abs(modelB_coor[3] - human_coor[3]) >= 3): #modelB wrongly predicts
             self.retrain_model('right', image_path, yolo_coor, human_coor)
+        print("Fixing errors - Over")
 
 
     def modelB_prediction(self, image_path, yolo_coor, next_modelB_path):
@@ -230,4 +228,4 @@ def triggerAPI():
     
 
 if (__name__=='__main__'):
-    app.run(debug=True)
+    app.run(debug=True, threaded=False)

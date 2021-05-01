@@ -126,3 +126,31 @@ API call -> Yolo coor & modelB for 2nd frame,
 1st frame of YOLO ,modelB, linear
 User annotates -> Next -> API call -> YOLO for 2nd frame, modelB for 2nd frame (32 YOLO = modelB) -> Response 200 -> Next frame -> 
 -------------------------------------------------------------------------------------
+
+April 25, 2021
+
+1) Change "Loading" status back to "Next", if the API response is 500
+2) frame-002.jpg not triggered
+3) Coordinates not saved
+4) On click of "Next", though the frame changes, it is not being updated on the UI
+5) .slice(0, -1) ->>>>>
+
+-------------------------------------
+
+May 01, 2021
+
+UI:
+1) Change "Loading" status back to "Next", if the API response is 500
+2) frame-002.jpg not triggered
+3) Coordinates not saved
+4) On click of "Next", though the frame changes, it is not being updated on the UI
+5) .slice(0, -1) ->>>>> 
+
+Backend:
+1) On server restart, the models are lost. We must save and load everytime when server is output
+2) Disable multiple post api calls for same frame
+3) 
+
+-----------------------
+
+
