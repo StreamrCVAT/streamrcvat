@@ -147,8 +147,8 @@ UI:
 5) .slice(0, -1) ->>>>> 
 
 Backend:
-1) On server restart, the models are lost. We must save and load everytime when server is output
-2) Disable multiple post api calls for same frame
+1) On server restart, the models are lost. We must save and load everytime when server is output. Setup server shutdown handler
+2) Disable multiple post api calls for same frame - by disabling the next button
 3) 
 
 -----------------------
