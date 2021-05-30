@@ -76,22 +76,22 @@ class Server:
         if(side_name == 'bottom'):
             bottom_part = cv2.resize(strips[1], (MODEL_HEIGHT, MODEL_WIDTH))
 
-            self.bottom_model.fit([[bottom_part]], [[human_coor[2]-yolo_coor[2]]], epochs=10, callbacks=[es])
+            self.bottom_model.fit(np.array([bottom_part]), np.array([human_coor[2]-yolo_coor[2]]), epochs=10, callbacks=[es])
 
         elif(side_name == 'left'):
             left_part = cv2.resize(strips[2], (MODEL_HEIGHT, MODEL_WIDTH))
 
-            self.left_model.fit([[left_part]], [[human_coor[1]-yolo_coor[1]]], epochs=10, callbacks=[es])
+            self.left_model.fit(np.array([left_part]), np.array([human_coor[1]-yolo_coor[1]]), epochs=10, callbacks=[es])
 
         elif(side_name == 'top'):
             top_part = cv2.resize(strips[3], (MODEL_HEIGHT, MODEL_WIDTH))
                     
-            self.top_model.fit([[top_part]], [[human_coor[0]-yolo_coor[0]]], epochs=10, callbacks=[es])
+            self.top_model.fit(np.array([top_part]), np.array([human_coor[0]-yolo_coor[0]]), epochs=10, callbacks=[es])
 
         else: #right side
             right_part = cv2.resize(strips[0], (MODEL_HEIGHT, MODEL_WIDTH))
 
-            self.right_model.fit([[right_part]], [[human_coor[3]-yolo_coor[3]]], epochs=10, callbacks=[es])
+            self.right_model.fit(np.array([right_part]), np.array([human_coor[3]-yolo_coor[3]]), epochs=10, callbacks=[es])
         print("Retrain mode - Over")
                 
 
@@ -228,4 +228,4 @@ def triggerAPI():
     
 
 if (__name__=='__main__'):
-    app.run(debug=True, threaded=False)
+    app.run(debug=False, threaded=False)
