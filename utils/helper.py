@@ -1,5 +1,6 @@
 import os
 import math
+import shutil
 from global_params import *
 
 # Return centroid pf two points
@@ -27,3 +28,6 @@ def getFrameCentroid(filePath):
     except:
         print("File not found")
         return    
+
+def copy_file_to(source_direc, destination_direc):
+    shutil.copyfile(source_direc, destination_direc)

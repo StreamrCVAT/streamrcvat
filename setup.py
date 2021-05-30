@@ -22,10 +22,10 @@ createFolder(YOLO_OUTPUT_TRACKED_PATH)
 # Write the absolute paths of directories paths.txt 
 with open(ABSOLUTE_PATH + '\\paths.txt','w') as file:
     file.write(ABSOLUTE_PATH + '\\' + FRAMES_PATH + '\n')
-    file.write(ABSOLUTE_PATH + '\\' + YOLO_OUTPUT_PATH + '\n')
+    file.write(ABSOLUTE_PATH + '\\' + YOLO_OUTPUT_TRACKED_PATH + '\n')
     file.write(ABSOLUTE_PATH + '\\' + MODEL_B_OUTPUT_PATH + '\n')
     file.write(ABSOLUTE_PATH + '\\' + LINEAR_INTERPOL_PATH + '\n')
     file.write(ABSOLUTE_PATH + '\\' + FINAL_UI_OUTPUT_PATH + '\n')
-    file.write(ABSOLUTE_PATH + '\\' + YOLO_OUTPUT_TRACKED_PATH + '\n')
+    file.write(ABSOLUTE_PATH + '\\' + YOLO_OUTPUT_PATH + '\n')
 
 print("paths.txt file created")
