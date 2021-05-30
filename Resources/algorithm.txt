@@ -104,10 +104,21 @@ When at 33:
 2) On clicking Upload button - change default to open current directory
 3) What is reset button functionality?
 4) Next button not working.
-5) For every frame, after clicking the next button, Send trigger request with the following parameter
-        POST /trigger
+5) For every frame, after clicking the next button, 
+Send trigger request with the following parameter
+        POST https://localhost:5000/trigger
         a. frame_number (1 based index)
         b. frame_filename (eg 00000425.txt)
 6) Enable confirm dialog box when the user closes the annotation tool.
-7) Instead of tracking the coordinates by reading the files, use DB to store the coordinates and fetch the values
+7) Instead of tracking the coordinates by reading the files,
+ use DB to store the coordinates and fetch the values
 
+
+5) For every frame, after clicking the next button, 
+Send trigger request with the following parameter
+        POST https://localhost:5000/trigger
+        a. frame_number (1 based index)
+        b. frame_filename (eg 00000425.txt)
+1) Make previous button only to view the frame and coordinates (not to modify the coordinates)
+2) On clicking Upload button - change default to open current directory
+6) Enable confirm dialog box when the user closes the annotation tool.
