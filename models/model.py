@@ -160,7 +160,7 @@ def main():
 
     while(True):
         if (len(os.listdir(finalCoordinatePath)) == frame_number):
-            fix_errors(image_path, yolo_coor, modelB_coor, human_coor): #[ymin xmin ymax xmax] 
+            fix_errors(image_path, yolo_coor, modelB_coor, human_coor) #[ymin xmin ymax xmax] 
 
     return True
     
