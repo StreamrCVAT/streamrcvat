@@ -42,11 +42,11 @@ from flask import Flask, request, render_template, jsonify
 # app = Flask()
 app = Flask(__name__, template_folder="templates")
 
-ABSOLUTE_PATH = os.path.dirname(os.path.realpath(__file__))
-frame_path = ABSOLUTE_PATH+"\\data\\"+FRAMES_PATH+'\\'
-yolo_coor_path = ABSOLUTE_PATH+"\\data\\"+YOLO_OUTPUT_TRACKED_PATH+'\\'
-modelB_coor_path = ABSOLUTE_PATH+"\\data\\"+MODEL_B_OUTPUT_PATH+'\\'
-human_coor_path = ABSOLUTE_PATH+"\\data\\"+FINAL_UI_OUTPUT_PATH+'\\'
+ABSOLUTE_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'workdir')
+frame_path = ABSOLUTE_PATH+'/'+FRAMES_PATH+'/'
+yolo_coor_path = ABSOLUTE_PATH+'/'+YOLO_OUTPUT_TRACKED_PATH+'/'
+modelB_coor_path = ABSOLUTE_PATH+'/'+MODEL_B_OUTPUT_PATH+'/'
+human_coor_path = ABSOLUTE_PATH+'/'+FINAL_UI_OUTPUT_PATH+'/'
 
 class Server:
     def __init__(self):
