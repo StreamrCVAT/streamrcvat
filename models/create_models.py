@@ -2,20 +2,21 @@
 import pandas as pd 
 import numpy as np
 import os
-from keras.layers import Conv2D
-from keras.layers import Input
-from keras.layers import Activation
-from keras.layers import BatchNormalization
-from keras.models import Model
-from keras.layers import Dense
-from keras.layers import Flatten
-from keras.callbacks import ModelCheckpoint
-from keras.callbacks import EarlyStopping
-from keras.layers.pooling import MaxPooling2D
-from keras.layers.merge import concatenate
-from keras.preprocessing.image import load_img
-from keras.preprocessing.image import img_to_array
-from keras.preprocessing.image import ImageDataGenerator
+ 
+from tensorflow.keras.layers import Conv2D
+from tensorflow.keras.layers import Input
+from tensorflow.keras.layers import Activation
+from tensorflow.keras.layers import BatchNormalization
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Flatten
+from tensorflow.keras.callbacks import ModelCheckpoint
+from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.layers import MaxPooling2D
+from tensorflow.keras.layers import concatenate
+from tensorflow.keras.preprocessing.image import load_img
+from tensorflow.keras.preprocessing.image import img_to_array
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import math 
 
 from numpy.random import seed

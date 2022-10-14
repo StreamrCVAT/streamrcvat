@@ -1,6 +1,0 @@
-D:\smart_space_lab\Intel_Annotation\code\DemoCode\clones\Annotation\data\frames\dataset2 - 1st group (White car1)
-D:\smart_space_lab\Intel_Annotation\code\DemoCode\clones\Annotation\data\yoloCoordinates
-D:\smart_space_lab\Intel_Annotation\code\DemoCode\clones\Annotation\data\modelBCoordinates
-D:\smart_space_lab\Intel_Annotation\code\DemoCode\clones\Annotation\data\linearInterpolCoordinates
-D:\smart_space_lab\Intel_Annotation\code\DemoCode\clones\Annotation\data\finalCoordinates
-D:\smart_space_lab\Intel_Annotation\code\DemoCode\clones\Annotation\data\yoloTrackedCoordinates

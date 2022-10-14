@@ -22,13 +22,39 @@ def objectInNextFrame(listOfCoordinates, centroid_point): #([[1,2,3,4], [1,2,3,4
     return listOfCoordinates[min_ind]
 
 # Track the object
+def trackNextObject(frame_number, batchLastFileName):
+
+    finalPath = ABSOLUTE_PATH + "\\data\\" + FINAL_UI_OUTPUT_PATH
+    batchLastFileName = finalPath   + "\\" + batchLastFileName
+
+    # Path to the YOLO output folder
+    yoloOutputPath = ABSOLUTE_PATH + "\\data\\" + YOLO_OUTPUT_PATH
+    yoloOutputPathFile = getFilesPathAsList(yoloOutputPath)[int(frame_number)]
+    previousObjectCentroid = helper.getFrameCentroid(batchLastFileName)
+    # Open and read contents from the file
+    file = open(yoloOutputPathFile, 'r')
+    lines = file.readlines()
+    
+    for ind, line in enumerate(lines):
+        lines[ind] = list(map(int, line.strip().split()[1:]))
+    # print(lines)
+
+    objectInCurrentFrame = objectInNextFrame(lines, previousObjectCentroid)
+    print(yoloOutputPathFile[-7:-4], objectInCurrentFrame)
+
+    new_file_directory = ABSOLUTE_PATH + "\\data\\" + YOLO_OUTPUT_TRACKED_PATH + "\\{}.txt".format(yoloOutputPathFile[-12:-4])
+    with open(new_file_directory, 'w') as new_file:
+        new_file.write('car '+' '.join(map(str, objectInCurrentFrame))+'\n')
+    return new_file_directory
+
+# Track the object
 def trackObject(previousObjectCentroid):
     # Path to the YOLO output folder
     yoloOutputPath = ABSOLUTE_PATH + "\\data\\" + YOLO_OUTPUT_PATH
     yoloOutputPathFiles = getFilesPathAsList(yoloOutputPath)
     
     # Iterate through each filename in the YOLO output folder - start tracking from batchSize(32)
-    for yoloOutputPathFile in yoloOutputPathFiles[BATCH_SIZE:]:
+    for yoloOutputPathFile in yoloOutputPathFiles:
 
         # Open and read contents from the file
         file = open(yoloOutputPathFile, 'r')
@@ -39,6 +65,7 @@ def trackObject(previousObjectCentroid):
         # print(lines)
 
         objectInCurrentFrame = objectInNextFrame(lines, previousObjectCentroid)
+        previousObjectCentroid = objectInCurrentFrame
         print(yoloOutputPathFile[-7:-4], objectInCurrentFrame)
 
         with open(ABSOLUTE_PATH + "\\data\\" + YOLO_OUTPUT_TRACKED_PATH + "\\{}.txt".format(yoloOutputPathFile[-12:-4]), 'w') as new_file:

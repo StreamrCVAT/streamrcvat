@@ -65,4 +65,103 @@ RELATED TO YOLO Model (JAN 28, 2021)
 4) Check code for Linear interpolation (https://github.com/sanjaytharagesh31/Annotation/blob/prototype/Old%20trials/linear_interpolation_code.py), and decide a pipeline
 
 
+TODO: Feb 28, 2021
+1) Call models.model from outside main.py
+2) Call outside global_params.py into models.model.global_params
+3) Modularizing model.py 
+4) Connecting Front-end to Back-end using API (optional)
+5) Testing UI + Backend
+6) Find alternative for reading files from UI 
+7) Change absolute path in batch_train()
+
+TODO: March 14, 2021
+
+General
+--> import files inside models folder has to be rewritten
+1) Make previous button only to view the frame and coordinates (not to modify the coordinates)
+2) On clicking Upload button - change default to open current directory
+3) What is reset button functionality?
+4) Next button not working.
+
+API
+1) Make a condition check in the front-end for the frame number.
+    If frame number >= 32, then make an API POST call with parameter as the frame filename and frame number.
+
+
+When at 32:
+    1. Train base models
+    2. Predict for 33
+When at 33:
+    1. If error is there    
+        a. Retrain the model based on latest changes 
+    2. Predict for 34
+
+
+
+10/04/21 - UI changes
+
+1) Make previous button only to view the frame and coordinates (not to modify the coordinates)
+2) On clicking Upload button - change default to open current directory
+3) What is reset button functionality?
+4) Next button not working.
+5) For every frame, after clicking the next button, 
+Send trigger request with the following parameter
+        POST https://localhost:5000/trigger
+        a. frame_number (1 based index)
+        b. frame_filename (eg 00000425.txt)
+6) Enable confirm dialog box when the user closes the annotation tool.
+7) Instead of tracking the coordinates by reading the files,
+ use DB to store the coordinates and fetch the values
+
+
+5) For every frame, after clicking the next button, 
+Send trigger request with the following parameter
+        POST https://localhost:5000/trigger
+        a. frame_number (1 based index)
+        b. frame_filename (eg 00000425.txt)
+1) Make previous button only to view the frame and coordinates (not to modify the coordinates)
+2) On clicking Upload button - change default to open current directory
+6) Enable confirm dialog box when the user closes the annotation tool.
+-----------------------------------------------------------------------------------
+April 17, 2021 - End to end Testing
+
+Intial all the folders will be empty
+
+1st frame -> user annotate -> (API call) finalCoors saved
+
+API call -> Yolo coor & modelB for 2nd frame, 
+2nd frame ->
+
+-------------------
+
+1st frame of YOLO ,modelB, linear
+User annotates -> Next -> API call -> YOLO for 2nd frame, modelB for 2nd frame (32 YOLO = modelB) -> Response 200 -> Next frame -> 
+-------------------------------------------------------------------------------------
+
+April 25, 2021
+
+1) Change "Loading" status back to "Next", if the API response is 500
+2) frame-002.jpg not triggered
+3) Coordinates not saved
+4) On click of "Next", though the frame changes, it is not being updated on the UI
+5) .slice(0, -1) ->>>>>
+
+-------------------------------------
+
+May 01, 2021
+
+UI:
+1) Change "Loading" status back to "Next", if the API response is 500
+2) frame-002.jpg not triggered
+3) Coordinates not saved
+4) On click of "Next", though the frame changes, it is not being updated on the UI
+5) .slice(0, -1) ->>>>> 
+
+Backend:
+1) On server restart, the models are lost. We must save and load everytime when server is output. Setup server shutdown handler
+2) Disable multiple post api calls for same frame - by disabling the next button
+3) 
+
+-----------------------
+
 

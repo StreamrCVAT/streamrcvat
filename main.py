@@ -17,10 +17,12 @@ def alertFrame32():
         if (len(os.listdir(finalPath)) == BATCH_SIZE):
             return finalPath + "\\" + os.listdir(finalPath)[-1]   
 
-def main():
+def createYOLOTracker(batchLastFileName):
     # firstCentroid = getFrameCentroid("frame-001.txt")
     try:
-        batchLastFileName = alertFrame32()
+        finalPath = os.path.dirname(os.path.realpath(__file__)) + "\\data\\" + FINAL_UI_OUTPUT_PATH
+        batchLastFileName = finalPath + "\\" + batchLastFileName
+        # batchLastFileName = alertFrame32()
         firstCentroid = helper.getFrameCentroid(batchLastFileName)
         yoloTracker.trackObject(firstCentroid) # Enable live YOLO tracker for the object
         print("YOLO Tracker completed!")
@@ -28,8 +30,8 @@ def main():
     except:
         print("Error in YOLO tracking")
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
 
 
 
